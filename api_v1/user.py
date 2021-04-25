@@ -12,7 +12,7 @@ def users():
         password = request.form.get('password')
         re_password = request.form.get('re-password')
 
-        if (userid and username and password and re_password):
+        if not (userid and username and password and re_password):
             return jsonify({'error': 'No arguments'}), 400
 
         if password != re_password:
@@ -34,8 +34,7 @@ def users():
     # for user in users:
     #     res_users.append(user.serialize)
     # return jsonify(res_users)
-    return jsonify(user.serialize for user in users)
-
+    return jsonify([user.serialize for user in users])
 
 @api.route('/users/<uid>', methods=['GET', 'PUT', 'DELETE'])
 def user_detail(uid):
@@ -59,8 +58,8 @@ def user_detail(uid):
     #     updated_data['username'] = username
     # if password:
     #     updated_data['password'] = password
-    # Focus.query.filter(Fcuser.id == uid).update({updated_data})
 
-    Focus.query.filter(Fcuser.id == uid).update({data})
+    # Focus.query.filter(Fcuser.id == uid).update(updated_data)
+    Focus.query.filter(Fcuser.id == uid).update(data)
     user = Fcuser.query.filter(Fcuser.id == uid).first()
     return jsonify(user.serialize)
