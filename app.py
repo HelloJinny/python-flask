@@ -19,7 +19,7 @@ def login():
 
 @app.route("/")
 def hello():
-    return 'Hello World!'
+    return render_template('home.html')
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 dbfile = os.path.join(basedir, 'db.sqlite')
@@ -38,7 +38,11 @@ def authenticate(username, password):
     if user.password == password:
         return user
 
-jwt = JWT(app, authenticate)
+def identity(payload):
+    userid = payload['identity']
+    return Fcuser.query.filter(Fcuser.id == userid).first()
+
+jwt = JWT(app, authenticate, identity)
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=5000, debug=True)
