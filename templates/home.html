@@ -29,7 +29,7 @@
             contentType: 'application/json',
             method: 'GET',
             beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'JMT ' + $.cookie('access_token'))
+                xhr.setRequestHeader('Authorization', 'JWT ' + $.cookie('access_token'))
             }
         }).done(function (res) {
             $("#content").text(res);
